@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://8.130.12.168:3306/hetadb
+    username: root
+    password: 735568
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:/Mapper/*.xml
+  type-aliases-package: com.heta.entity
