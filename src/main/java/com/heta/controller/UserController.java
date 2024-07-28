@@ -1,5 +1,6 @@
 package com.heta.controller;
 
+import com.heta.entity.User;
 import com.heta.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,10 @@ public class UserController {
         Map<String,Boolean> response = new HashMap<>();
         response.put("result",result);
         return response;
+    }
+
+    @GetMapping("/findUserById/{id}")
+    public User findUserById(@PathVariable("id") int id){
+        return userService.findUserById(id);
     }
 }

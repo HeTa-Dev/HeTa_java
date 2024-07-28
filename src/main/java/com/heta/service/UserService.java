@@ -17,4 +17,7 @@ public class UserService {
         }
         return user.getPasswd().equals(passwd);
     }
+    public User findUserById(int id){
+        return userRepository.findUserById(id);
+    }
 }
