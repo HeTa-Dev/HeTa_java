@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.heta.repo.UserRepository">
+    <!-- 根据用户ID获取用户信息 -->
     <select id="findUserById" parameterType="int" resultType="User">
         select * from user where id = #{id}
     </select>
+
+    <!-- 自定义结果集，用来将数据库中以"xxx_yy_zz"形式命名的变量和java中驼峰法命名的变量匹配 -->
+    <!-- 框架只会按照字符串是否相等进行绝对匹配 -->
+    <resultMap id="userMap" type="User">
+        <result column="phone_num" property="phoneNum"/>
+    </resultMap>
+    <!-- 根据用户手机号获取用户信息 -->
+    <select id="findUserByPhoneNum" parameterType="long" resultMap="userMap">
+        select * from user where phone_num = #{phoneNum}
+    </select>
+
+    <!-- 添加新用户 -->
+    <insert id="addNewUser" parameterType="User" >
+        insert into user(username,passwd,phone_num,type) values (#{username},#{passwd},#{phoneNum},#{type})
+    </insert>
 </mapper>
