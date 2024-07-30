@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+// 用来处理和用户有关的请求，例如对用户表的CRUD操作等
 @RestController
 @RequestMapping("/heta/user")
 public class UserController {
@@ -47,5 +48,10 @@ public class UserController {
     @GetMapping("/getUserDetailById/{id}")
     public User getUserDetailById(@PathVariable("id")int id){
         return userService.getUserDetailById(id);
+    }
+
+    @PutMapping("/updateUser")
+    public void updateUser(@RequestBody User user){
+        userService.updateUser(user);
     }
 }

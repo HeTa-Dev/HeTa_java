@@ -7,4 +7,5 @@ public interface UserRepository {
     public User findUserByPhoneNum(long phoneNum);
     public void addNewUser(User user);
     public User getUserDetailById(int id);
+    public void updateUser(User user);
 }

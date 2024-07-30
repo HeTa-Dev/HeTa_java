@@ -18,6 +18,7 @@ public class UserService {
         }
         return user.getPasswd().equals(passwd);
     }
+
     public User findUserById(int id){
         return userRepository.findUserById(id);
     }
@@ -30,5 +31,9 @@ public class UserService {
 
     public User getUserDetailById(int id){
         return userRepository.getUserDetailById(id);
+    }
+
+    public void updateUser(User user){
+        userRepository.updateUser(user);
     }
 }

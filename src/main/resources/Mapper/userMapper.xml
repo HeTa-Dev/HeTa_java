@@ -3,31 +3,53 @@
 <mapper namespace="com.heta.repo.UserRepository">
     <!-- 自定义结果集，用来将数据库中以"xxx_yy_zz"形式命名的变量和java中驼峰法命名的变量匹配 -->
     <!-- 框架只会按照字符串是否相等进行绝对匹配 -->
-    <resultMap id="userMap" type="User">
+    <resultMap id="userResultMap" type="User">
         <result column="phone_num" property="phoneNum"/>
         <result column="avatar_path" property="avatarPath"/>
         <result column="personal_slogan" property="personalSlogan"/>
     </resultMap>
 
-
     <!-- 根据用户ID获取用户信息 -->
     <select id="findUserById" parameterType="int" resultType="User">
-        select * from user where id = #{id}
+        select *
+        from user
+        where id = #{id}
     </select>
 
     <!-- 根据用户手机号获取用户信息 -->
-    <select id="findUserByPhoneNum" parameterType="long" resultMap="userMap">
-        select * from user where phone_num = #{phoneNum}
+    <select id="findUserByPhoneNum" parameterType="long" resultMap="userResultMap">
+        select *
+        from user
+        where phone_num = #{phoneNum}
     </select>
 
     <!-- 添加新用户 -->
     <insert id="addNewUser" parameterType="User" >
-        insert into user(username,passwd,phone_num,type) values (#{username},#{passwd},#{phoneNum},#{type});
-        insert into user_info(user_id) values (LAST_INSERT_ID())
+        insert into user(username,passwd,phone_num,type)
+        values (#{username},#{passwd},#{phoneNum},#{type});
+
+        insert into user_info(user_id)
+        values (LAST_INSERT_ID())
     </insert>
 
     <!-- 获取用户详细信息，包括地址、年龄等等在user_info表中的信息 -->
-    <select id="getUserDetailById" parameterType="int" resultMap="userMap">
-        select * from user join user_info on user.id = user_info.user_id where user.id = #{id}
+    <select id="getUserDetailById" parameterType="int" resultMap="userResultMap">
+        select *
+        from user join user_info on user.id = user_info.user_id
+        where user.id = #{id}
     </select>
+    
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="User">
+        update user
+        set username = #{username},
+            avatar_path = #{avatarPath}
+        where id = #{id};
+
+        update user_info
+        set age = #{age},
+            address = #{address},
+            personal_slogan = #{personalSlogan}
+        where user_id = #{id}
+    </update>
 </mapper>

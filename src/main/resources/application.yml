@@ -10,3 +10,11 @@ spring:
 mybatis:
   mapper-locations: classpath:/Mapper/*.xml
   type-aliases-package: com.heta.entity
+
+# 配置阿里云OSS上传需要的密钥等
+aliyun:
+  oss:
+    endpoint: oss-cn-shanghai.aliyuncs.com
+    accessKeyId: LTAI5tSN6c3PccwyohJCAo9j
+    accessKeySecret: GIkDt8md0LZZNjLFHtyFsa7AtaSlla
+    bucketName: heta-images
