@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heta.repo.OrderViewRepository">
+
+    <!-- 定义 resultMap 来处理复杂的结果集映射 -->
+    <resultMap id="OrderViewResultMap" type="OrderView">
+        <id column="id" property="id"/>
+        <result column="seller_id" property="sellerId"/>
+        <result column="title" property="title"/>
+        <result column="text" property="text"/>
+        <result column="price" property="price"/>
+        <collection property="imagePathList" ofType="string" javaType="java.util.List">
+            <result column="imagePathList" />
+        </collection>
+        <collection property="tagList" ofType="string" javaType="java.util.List">
+            <result column="tagList" />
+        </collection>
+    </resultMap>
+
+
+    <insert id="addNewOrderView" parameterType="OrderView">
+        <!-- 插入 order_view 表 -->
+        insert into order_view (seller_id, title, text, price)
+        values (#{sellerId}, #{title}, #{text}, #{price});
+
+        <!-- 插入到 order_view_image 表 -->
+        <foreach collection="imagePathList" item="imagePath" separator="">
+            insert into order_view_image (order_view_id, image_path)
+            values (LAST_INSERT_ID(), #{imagePath});
+        </foreach>
+
+        <!-- 插入到 order_view_tag 表 -->
+        <foreach collection="tagList" item="tag" separator="">
+            insert into order_view_tag (order_view_id, text)
+            values (LAST_INSERT_ID(), #{tag});
+        </foreach>
+    </insert>
+
+    <select id="findOrderViewById" resultMap="OrderViewResultMap" parameterType="int">
+        <!-- 查询 order_view 表中的基本信息 -->
+        select
+        ov.id,
+        ov.seller_id,
+        ov.title,
+        ov.text,
+        ov.price,
+            -- 查询与此 order_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+            from order_view_image
+            where order_view_id = ov.id) as imagePathList,
+            -- 查询与此 order_view 关联的所有标签
+        (select GROUP_CONCAT(text)
+            from order_view_tag
+            where order_view_id = ov.id) as tagList
+        from
+        order_view ov
+        where
+        ov.id = #{id};
+    </select>
+
+    <select id="findOrderViewBySellerId" resultMap="OrderViewResultMap" parameterType="int">
+        <!-- 查询 order_view 表中的基本信息 -->
+        select
+        ov.id,
+        ov.seller_id,
+        ov.title,
+        ov.text,
+        ov.price,
+        -- 查询与此 order_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from order_view_image
+        where order_view_id = ov.id) as imagePathList,
+        -- 查询与此 order_view 关联的所有标签
+        (select GROUP_CONCAT(text)
+        from order_view_tag
+        where order_view_id = ov.id) as tagList
+        from
+        order_view ov
+        where
+        ov.seller_id = #{sellerId};
+    </select>
+</mapper>
