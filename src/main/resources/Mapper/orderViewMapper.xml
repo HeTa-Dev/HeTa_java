@@ -9,6 +9,7 @@
         <result column="title" property="title"/>
         <result column="text" property="text"/>
         <result column="price" property="price"/>
+        <result column="cover_image_path" property="coverImagePath"/>
         <collection property="imagePathList" ofType="string" javaType="java.util.List">
             <result column="imagePathList" />
         </collection>
@@ -20,8 +21,8 @@
 
     <insert id="addNewOrderView" parameterType="OrderView">
         <!-- 插入 order_view 表 -->
-        insert into order_view (seller_id, title, text, price)
-        values (#{sellerId}, #{title}, #{text}, #{price});
+        insert into order_view (seller_id, title, text, price,cover_image_path)
+        values (#{sellerId}, #{title}, #{text}, #{price},#{coverImagePath});
 
         <!-- 插入到 order_view_image 表 -->
         <foreach collection="imagePathList" item="imagePath" separator="">
@@ -44,6 +45,7 @@
         ov.title,
         ov.text,
         ov.price,
+        ov.cover_image_path,
             -- 查询与此 order_view 关联的所有图片路径
         (select GROUP_CONCAT(image_path)
             from order_view_image
@@ -66,6 +68,7 @@
         ov.title,
         ov.text,
         ov.price,
+        ov.cover_image_path,
         -- 查询与此 order_view 关联的所有图片路径
         (select GROUP_CONCAT(image_path)
         from order_view_image
@@ -78,5 +81,26 @@
         order_view ov
         where
         ov.seller_id = #{sellerId};
+    </select>
+
+    <select id="findAllOrderView" resultMap="OrderViewResultMap">
+        <!-- 查询 order_view 表中的基本信息 -->
+        select
+        ov.id,
+        ov.seller_id,
+        ov.title,
+        ov.text,
+        ov.price,
+        ov.cover_image_path,
+        -- 查询与此 order_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from order_view_image
+        where order_view_id = ov.id) as imagePathList,
+        -- 查询与此 order_view 关联的所有标签
+        (select GROUP_CONCAT(text)
+        from order_view_tag
+        where order_view_id = ov.id) as tagList
+        from
+        order_view ov
     </select>
 </mapper>

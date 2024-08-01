@@ -23,4 +23,9 @@ public class OrderViewService {
     public List<OrderView> findOrderViewBySellerId(int sellerId){
         return orderViewRepository.findOrderViewBySellerId(sellerId);
     }
+
+    public List<OrderView> findAllOrderView(){
+        return orderViewRepository.findAllOrderView();
+    }
+
 }

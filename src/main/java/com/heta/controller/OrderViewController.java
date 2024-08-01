@@ -28,4 +28,9 @@ public class OrderViewController {
     public List<OrderView> findOrderViewBySellerId(@PathVariable("sellerId") int sellerId){
         return orderViewService.findOrderViewBySellerId(sellerId);
     }
+
+    @GetMapping("/findAllOrderView")
+    public List<OrderView> findAllOrderView(){
+        return orderViewService.findAllOrderView();
+    }
 }

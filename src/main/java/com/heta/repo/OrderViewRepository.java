@@ -8,4 +8,5 @@ public interface OrderViewRepository {
     public void addNewOrderView(OrderView orderView);
     public OrderView findOrderViewById(int id);
     public List<OrderView> findOrderViewBySellerId(int sellerId);
+    public List<OrderView> findAllOrderView();
 }

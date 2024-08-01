@@ -11,6 +11,7 @@ public class OrderView {
     private String title;
     private String text;
     private double price;
+    private String coverImagePath;
     private List<String> imagePathList;
     private List<String> tagList;
 }
