@@ -8,6 +8,7 @@ import java.util.List;
 public class OrderView {
     private int id;
     private int sellerId;
+    private String sellerName;
     private String title;
     private String text;
     private double price;

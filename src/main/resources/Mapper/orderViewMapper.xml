@@ -8,6 +8,7 @@
         <result column="seller_id" property="sellerId"/>
         <result column="title" property="title"/>
         <result column="text" property="text"/>
+        <result column="username" property="sellerName"/>
         <result column="price" property="price"/>
         <result column="cover_image_path" property="coverImagePath"/>
         <collection property="imagePathList" ofType="string" javaType="java.util.List">
@@ -99,8 +100,9 @@
         -- 查询与此 order_view 关联的所有标签
         (select GROUP_CONCAT(text)
         from order_view_tag
-        where order_view_id = ov.id) as tagList
+        where order_view_id = ov.id) as tagList,
+        u.username
         from
-        order_view ov
+        order_view ov join user u on ov.seller_id = u.id
     </select>
 </mapper>

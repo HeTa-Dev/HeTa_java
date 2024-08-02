@@ -17,15 +17,25 @@ public class OrderViewService {
     }
 
     public OrderView findOrderViewById(int id){
-        return orderViewRepository.findOrderViewById(id);
+        OrderView orderView = orderViewRepository.findOrderViewById(id);
+        orderView.setImagePathList(List.of(orderView.getImagePathList().get(0).split(",")));
+        return orderView;
     }
 
     public List<OrderView> findOrderViewBySellerId(int sellerId){
-        return orderViewRepository.findOrderViewBySellerId(sellerId);
+        List<OrderView> orderViewList = orderViewRepository.findOrderViewBySellerId(sellerId);
+        for(OrderView orderView: orderViewList){
+            orderView.setImagePathList(List.of(orderView.getImagePathList().get(0).split(",")));
+        }
+        return orderViewList;
     }
 
     public List<OrderView> findAllOrderView(){
-        return orderViewRepository.findAllOrderView();
+        List<OrderView> orderViewList = orderViewRepository.findAllOrderView();
+        for(OrderView orderView: orderViewList){
+            orderView.setImagePathList(List.of(orderView.getImagePathList().get(0).split(",")));
+        }
+        return orderViewList;
     }
 
 }

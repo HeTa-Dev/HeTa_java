@@ -10,7 +10,7 @@
     </resultMap>
 
     <!-- 根据用户ID获取用户信息 -->
-    <select id="findUserById" parameterType="int" resultType="User">
+    <select id="findUserById" parameterType="int" resultMap="userResultMap">
         select *
         from user
         where id = #{id}
