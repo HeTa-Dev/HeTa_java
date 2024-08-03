@@ -11,6 +11,8 @@
         <result column="username" property="sellerName"/>
         <result column="price" property="price"/>
         <result column="cover_image_path" property="coverImagePath"/>
+        <result column="cover_height" property="coverHeight"/>
+        <result column="cover_width" property="coverWidth"/>
         <collection property="imagePathList" ofType="string" javaType="java.util.List">
             <result column="imagePathList" />
         </collection>
@@ -22,8 +24,8 @@
 
     <insert id="addNewOrderView" parameterType="OrderView">
         <!-- 插入 order_view 表 -->
-        insert into order_view (seller_id, title, text, price,cover_image_path)
-        values (#{sellerId}, #{title}, #{text}, #{price},#{coverImagePath});
+        insert into order_view (seller_id, title, text, price,cover_image_path,cover_height,cover_width)
+        values (#{sellerId}, #{title}, #{text}, #{price},#{coverImagePath},#{coverHeight},#{coverWidth});
 
         <!-- 插入到 order_view_image 表 -->
         <foreach collection="imagePathList" item="imagePath" separator="">
@@ -93,6 +95,8 @@
         ov.text,
         ov.price,
         ov.cover_image_path,
+        ov.cover_height,
+        ov.cover_width,
         -- 查询与此 order_view 关联的所有图片路径
         (select GROUP_CONCAT(image_path)
         from order_view_image

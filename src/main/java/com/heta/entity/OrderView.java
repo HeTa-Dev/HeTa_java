@@ -15,4 +15,6 @@ public class OrderView {
     private String coverImagePath;
     private List<String> imagePathList;
     private List<String> tagList;
+    private int coverHeight;
+    private int coverWidth;
 }
