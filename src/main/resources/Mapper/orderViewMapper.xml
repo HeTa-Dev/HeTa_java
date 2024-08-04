@@ -41,62 +41,10 @@
     </insert>
 
     <select id="findOrderViewById" resultMap="OrderViewResultMap" parameterType="int">
+        set session group_concat_max_len = 1000000;  -- 设置最大长度为 1MB,否则可能导致异常截断
         <!-- 查询 order_view 表中的基本信息 -->
         select
-        ov.id,
-        ov.seller_id,
-        ov.title,
-        ov.text,
-        ov.price,
-        ov.cover_image_path,
-            -- 查询与此 order_view 关联的所有图片路径
-        (select GROUP_CONCAT(image_path)
-            from order_view_image
-            where order_view_id = ov.id) as imagePathList,
-            -- 查询与此 order_view 关联的所有标签
-        (select GROUP_CONCAT(text)
-            from order_view_tag
-            where order_view_id = ov.id) as tagList
-        from
-        order_view ov
-        where
-        ov.id = #{id};
-    </select>
-
-    <select id="findOrderViewBySellerId" resultMap="OrderViewResultMap" parameterType="int">
-        <!-- 查询 order_view 表中的基本信息 -->
-        select
-        ov.id,
-        ov.seller_id,
-        ov.title,
-        ov.text,
-        ov.price,
-        ov.cover_image_path,
-        -- 查询与此 order_view 关联的所有图片路径
-        (select GROUP_CONCAT(image_path)
-        from order_view_image
-        where order_view_id = ov.id) as imagePathList,
-        -- 查询与此 order_view 关联的所有标签
-        (select GROUP_CONCAT(text)
-        from order_view_tag
-        where order_view_id = ov.id) as tagList
-        from
-        order_view ov
-        where
-        ov.seller_id = #{sellerId};
-    </select>
-
-    <select id="findAllOrderView" resultMap="OrderViewResultMap">
-        <!-- 查询 order_view 表中的基本信息 -->
-        select
-        ov.id,
-        ov.seller_id,
-        ov.title,
-        ov.text,
-        ov.price,
-        ov.cover_image_path,
-        ov.cover_height,
-        ov.cover_width,
+        ov.*,
         -- 查询与此 order_view 关联的所有图片路径
         (select GROUP_CONCAT(image_path)
         from order_view_image
@@ -108,5 +56,48 @@
         u.username
         from
         order_view ov join user u on ov.seller_id = u.id
+        where
+        ov.id = #{id}
+    </select>
+
+    <select id="findOrderViewBySellerId" resultMap="OrderViewResultMap" parameterType="int">
+        set session group_concat_max_len = 1000000;  -- 设置最大长度为 1MB,否则可能导致异常截断
+        <!-- 查询 order_view 表中的基本信息 -->
+        select
+        ov.*,
+        -- 查询与此 order_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from order_view_image
+        where order_view_id = ov.id) as imagePathList,
+        -- 查询与此 order_view 关联的所有标签
+        (select GROUP_CONCAT(text)
+        from order_view_tag
+        where order_view_id = ov.id) as tagList,
+        u.username
+        from
+        order_view ov join user u on ov.seller_id = u.id
+        where
+        ov.seller_id = #{sellerId}
+        order by RAND()
+    </select>
+
+    <select id="findAllOrderView" resultMap="OrderViewResultMap">
+        set session group_concat_max_len = 1000000;  -- 设置最大长度为 1MB，否则可能导致异常截断
+        <!-- 查询 order_view 表中的基本信息 -->
+        select
+        ov.*,
+        -- 查询与此 order_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from order_view_image
+        where order_view_id = ov.id) as imagePathList,
+        -- 查询与此 order_view 关联的所有标签
+        (select GROUP_CONCAT(text)
+        from order_view_tag
+        where order_view_id = ov.id) as tagList,
+        u.username
+        from
+        order_view ov join user u on ov.seller_id = u.id
+        order by RAND()
+
     </select>
 </mapper>

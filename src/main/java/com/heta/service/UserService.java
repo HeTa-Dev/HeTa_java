@@ -5,6 +5,8 @@ import com.heta.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 //连接UserRepository接口和UserController的类，可能需要进行一些逻辑判断等操作
 @Service
 public class UserService {
@@ -36,4 +38,5 @@ public class UserService {
     public void updateUser(User user){
         userRepository.updateUser(user);
     }
+
 }

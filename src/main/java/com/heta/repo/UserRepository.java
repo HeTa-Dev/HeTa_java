@@ -1,6 +1,9 @@
 package com.heta.repo;
 
 import com.heta.entity.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserRepository {
     public User findUserById(int id);

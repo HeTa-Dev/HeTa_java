@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // 用来处理和用户有关的请求，例如对用户表的CRUD操作等
@@ -54,4 +55,5 @@ public class UserController {
     public void updateUser(@RequestBody User user){
         userService.updateUser(user);
     }
+
 }
