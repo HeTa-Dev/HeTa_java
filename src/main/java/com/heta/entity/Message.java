@@ -1,12 +1,14 @@
 package com.heta.entity;
 
 import lombok.Data;
+import java.sql.Timestamp;
 
 @Data
 public class Message {
-    private int id;
-    private int senderId;
+    private Integer id;
+    private Integer senderId;
     private String senderName;
+    private Integer receiverId;
     private String content;
-    private int receiverId;
+    private Timestamp timestamp;
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heta.repo.MessageRepository">
+
+    <!-- 插入消息记录 -->
+    <insert id="insertMessage" parameterType="Message">
+        INSERT INTO messages (sender_id, sender_name, receiver_id, content)
+        VALUES (#{senderId}, #{senderName}, #{receiverId}, #{content})
+    </insert>
+
+    <!-- 查询历史记录 -->
+    <select id="getMessagesByReceiverId" resultType="Message">
+        SELECT id, sender_id AS senderId, sender_name AS senderName, receiver_id AS receiverId, content, timestamp
+        FROM messages
+        WHERE receiver_id = #{receiverId}
+        ORDER BY timestamp
+            LIMIT #{offset}, #{limit}
+    </select>
+    <select id="getAllMessage" resultType="Message">
+        select id, sender_id as senderId, sender_name as senderName, receiver_id as receiverId, content, timestamp
+        from messages
+        order by timestamp desc
+            LIMIT #{offset}, #{limit}
+    </select>
+</mapper>
