@@ -11,4 +11,5 @@ public class Message {
     private Integer receiverId;
     private String content;
     private Timestamp timestamp;
+    private String senderAvatarPath;
 }
