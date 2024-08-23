@@ -8,7 +8,10 @@
         <result column="avatar_path" property="avatarPath"/>
         <result column="personal_slogan" property="personalSlogan"/>
     </resultMap>
-
+    <resultMap id="contactResultMap" type="java.util.Map">
+        <result column="userB_id" property="id" javaType="Integer"/>
+        <result column="userB_name" property="username" javaType="String"/>
+    </resultMap>
     <!-- 根据用户ID获取用户信息 -->
     <select id="findUserById" parameterType="int" resultMap="userResultMap">
         select *
@@ -52,4 +55,10 @@
             personal_slogan = #{personalSlogan}
         where user_id = #{id}
     </update>
+
+    <select id="getContactById" parameterType="int" resultMap="contactResultMap">
+        select userB_id, userB_name
+        from user_contact
+        where userA_id = #{id}
+    </select>
 </mapper>

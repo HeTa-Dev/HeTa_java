@@ -23,7 +23,7 @@
         select *
         from messages
         where receiver_id = #{receiverId}
-        orderby timestamp
+        order by timestamp desc
             LIMIT #{offset}, #{limit}
     </select>
 

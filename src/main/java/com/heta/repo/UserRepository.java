@@ -4,6 +4,7 @@ import com.heta.entity.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserRepository {
     public User findUserById(int id);
@@ -11,4 +12,5 @@ public interface UserRepository {
     public void addNewUser(User user);
     public User getUserDetailById(int id);
     public void updateUser(User user);
+    public List<User> getContactById(int id);
 }

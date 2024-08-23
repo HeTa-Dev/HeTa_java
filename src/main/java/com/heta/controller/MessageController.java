@@ -21,4 +21,12 @@ public class MessageController {
         List<Message> messages = messageService.getAllMessage(offset, limit);
         return ResponseEntity.ok(messages);
     }
+
+    @GetMapping("/getMessageByReceiverId/{receiverId}/{offset}/{limit}")
+    public List<Message> getMessageByReceiverId(
+            @PathVariable("receiverId") int receiverId,
+            @PathVariable("offset") int offset,
+            @PathVariable("limit") int limit){
+        return messageService.getMessagesByReceiverId(receiverId,offset,limit);
+    }
 }
