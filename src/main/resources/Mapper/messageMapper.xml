@@ -19,10 +19,11 @@
     </insert>
 
     <!-- 查询历史记录 -->
-    <select id="getMessagesByReceiverId" resultMap="messageResultMap">
+    <select id="getMessagesById" resultMap="messageResultMap">
         select *
         from messages
-        where receiver_id = #{receiverId}
+        where (receiver_id = #{receiverId} and sender_id = #{senderId})
+           or (receiver_id = #{senderId} and sender_id = #{receiverId})
         order by timestamp desc
             LIMIT #{offset}, #{limit}
     </select>

@@ -17,8 +17,8 @@ public class MessageService {
         messageRepository.insertMessage(message);
     }
 
-    public List<Message> getMessagesByReceiverId(int receiverId, int offset, int limit) {
-        return messageRepository.getMessagesByReceiverId(receiverId, offset, limit);
+    public List<Message> getMessagesById(int senderId, int receiverId, int offset, int limit) {
+        return messageRepository.getMessagesById(senderId, receiverId, offset, limit);
     }
 
     public List<Message> getAllMessage(int offset, int limit){

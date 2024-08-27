@@ -22,11 +22,12 @@ public class MessageController {
         return ResponseEntity.ok(messages);
     }
 
-    @GetMapping("/getMessageByReceiverId/{receiverId}/{offset}/{limit}")
-    public List<Message> getMessageByReceiverId(
+    @GetMapping("/getMessageById/{senderId}/{receiverId}/{offset}/{limit}")
+    public List<Message> getMessageById(
+            @PathVariable("senderId") int senderId,
             @PathVariable("receiverId") int receiverId,
             @PathVariable("offset") int offset,
             @PathVariable("limit") int limit){
-        return messageService.getMessagesByReceiverId(receiverId,offset,limit);
+        return messageService.getMessagesById(senderId, receiverId,offset,limit);
     }
 }
