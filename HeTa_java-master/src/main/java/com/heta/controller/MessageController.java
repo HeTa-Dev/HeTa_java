@@ -30,4 +30,14 @@ public class MessageController {
             @PathVariable("limit") int limit){
         return messageService.getMessagesById(senderId, receiverId,offset,limit);
     }
+
+    // 新增接口：获取私信消息
+    @GetMapping("/getPrivateMessages/{senderId}/{receiverId}/{offset}/{limit}")
+    public List<Message> getPrivateMessages(
+            @PathVariable("senderId") int senderId,
+            @PathVariable("receiverId") int receiverId,
+            @PathVariable("offset") int offset,
+            @PathVariable("limit") int limit) {
+        return messageService.getPrivateMessages(senderId, receiverId, offset, limit);
+    }
 }

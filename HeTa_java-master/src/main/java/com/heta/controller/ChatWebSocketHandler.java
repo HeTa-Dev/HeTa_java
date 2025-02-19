@@ -39,9 +39,20 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         // 将消息格式化为JSON
         String formattedMessage = objectMapper.writeValueAsString(chatMessage);
         // 将消息发送给所有连接的客户端
-        for (WebSocketSession webSocketSession : sessions) {
-            webSocketSession.sendMessage(new TextMessage(formattedMessage));
+        // 如果是私信，只发送给指定的接收者
+        if (chatMessage.isPrivate()) {
+            for (WebSocketSession webSocketSession : sessions) {
+                if (webSocketSession.getAttributes().get("userId").equals(chatMessage.getReceiverId())) {
+                    webSocketSession.sendMessage(new TextMessage(formattedMessage));
+                }
+            }
+        } else {
+            // 如果不是私信，广播给所有连接的客户端
+            for (WebSocketSession webSocketSession : sessions) {
+                webSocketSession.sendMessage(new TextMessage(formattedMessage));
+            }
         }
+    }
     }
 
     @Override

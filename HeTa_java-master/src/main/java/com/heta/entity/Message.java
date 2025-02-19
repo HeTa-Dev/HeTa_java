@@ -12,4 +12,5 @@ public class Message {
     private String content;
     private Timestamp timestamp;
     private String senderAvatarPath;
+    private boolean isPrivate;
 }
