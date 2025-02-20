@@ -22,3 +22,7 @@ aliyun:
     accessKeyId: LTAI5tSN6c3PccwyohJCAo9j
     accessKeySecret: GIkDt8md0LZZNjLFHtyFsa7AtaSlla
     bucketName: heta-images
+
+server:
+  address: 0.0.0.0
+  port: 8080
