@@ -15,4 +15,5 @@ public class PostView {
     private List<String> imagePathList;
     private int coverHeight;
     private int coverWidth;
+    private List<Comment> comments;
 }

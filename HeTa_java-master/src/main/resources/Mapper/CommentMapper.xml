@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heta.repo.CommentRepository">
+
+    <!-- 定义 Comment 的 resultMap -->
+    <resultMap id="CommentResultMap" type="Comment">
+        <id column="id" property="id"/> <!-- 评论 ID -->
+        <result column="user_id" property="userId"/> <!-- 用户 ID -->
+        <result column="user_name" property="userName"/> <!-- 用户名 -->
+        <result column="post_id" property="postId"/> <!-- 关联的帖子 ID -->
+        <result column="content" property="content"/> <!-- 评论内容 -->
+        <result column="created_at" property="createdAt"/> <!-- 评论创建时间 -->
+        <result column="avatar_path" property="avatarPath"/> <!-- 用户头像路径 -->
+    </resultMap>
+
+    <!-- 添加一条新的评论 -->
+    <insert id="addNewComment" parameterType="Comment">
+        INSERT INTO comment (user_id, user_name, post_id, content, created_at, avatar_path)
+        VALUES (#{userId}, #{userName}, #{postId}, #{content}, #{createdAt}, #{avatarPath});
+    </insert>
+
+    <!-- 根据评论的唯一标识查找评论 -->
+    <select id="findCommentById" resultMap="CommentResultMap" parameterType="int">
+        SELECT *
+        FROM comment
+        WHERE id = #{id};
+    </select>
+
+    <!-- 根据评论者的用户 ID 查找评论列表 -->
+    <select id="findCommentsByUserId" resultMap="CommentResultMap" parameterType="int">
+        SELECT *
+        FROM comment
+        WHERE user_id = #{userId};
+    </select>
+
+    <!-- 根据帖子的 ID 查找该帖子下的所有评论列表 -->
+    <select id="findCommentsByPostId" resultMap="CommentResultMap" parameterType="int">
+        SELECT *
+        FROM comment
+        WHERE post_id = #{postId};
+    </select>
+
+    <!-- 查找所有的评论 -->
+    <select id="findAllComments" resultMap="CommentResultMap">
+        SELECT *
+        FROM comment;
+    </select>
+
+</mapper>

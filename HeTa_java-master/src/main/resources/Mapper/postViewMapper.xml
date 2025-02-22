@@ -15,7 +15,19 @@
         <collection property="imagePathList" ofType="string" javaType="java.util.List">
             <result column="imagePathList" />
         </collection>
+        <collection property="comments" ofType="Comment" resultMap="com.heta.repo.CommentRepository.CommentResultMap"/>
     </resultMap>
+
+<!--    &lt;!&ndash; Comment 的 resultMap 定义 &ndash;&gt;-->
+<!--    <resultMap id="CommentResultMap" type="Comment">-->
+<!--        <id column="comment_id" property="id"/> &lt;!&ndash; 评论 ID &ndash;&gt;-->
+<!--        <result column="comment_user_id" property="userId"/> &lt;!&ndash; 用户 ID &ndash;&gt;-->
+<!--        <result column="comment_user_name" property="userName"/> &lt;!&ndash; 用户名 &ndash;&gt;-->
+<!--        <result column="comment_post_id" property="postId"/> &lt;!&ndash; 关联的 PostView ID &ndash;&gt;-->
+<!--        <result column="comment_content" property="content"/> &lt;!&ndash; 评论内容 &ndash;&gt;-->
+<!--        <result column="comment_created_at" property="createdAt"/> &lt;!&ndash; 评论创建时间 &ndash;&gt;-->
+<!--        <result column="comment_avatar_path" property="avatarPath"/> &lt;!&ndash; 用户头像路径 &ndash;&gt;-->
+<!--    </resultMap>-->
 
     <!-- 插入新的 PostView 记录 -->
     <insert id="addNewPostView" parameterType="PostView">
@@ -24,7 +36,7 @@
         values (#{userId}, #{title}, #{text}, #{coverImagePath}, #{coverHeight}, #{coverWidth});
 
         <!-- 插入到 post_view_image 表 -->
-        <foreach collection="imagePathList" item="imagePath" separator="">
+        <foreach collection="imagePathList" item="imagePath" separator=";">
             insert into post_view_image (post_view_id, image_path)
             values (LAST_INSERT_ID(), #{imagePath});
         </foreach>
@@ -40,9 +52,19 @@
         (select GROUP_CONCAT(image_path)
         from post_view_image
         where post_view_id = pv.id) as imagePathList,
-        u.username
+        u.username,
+        -- 查询与此 post_view 关联的所有评论
+        c.id as comment_id,
+        c.user_id as comment_user_id,
+        c.user_name as comment_user_name,
+        c.post_id as comment_post_id,
+        c.content as comment_content,
+        c.created_at as comment_created_at,
+        c.avatar_path as comment_avatar_path
         from
-        post_view pv join user u on pv.user_id = u.id
+        post_view pv
+        join user u on pv.user_id = u.id
+        left join comment c on pv.id = c.post_id
         where
         pv.id = #{id}
     </select>
@@ -57,9 +79,19 @@
         (select GROUP_CONCAT(image_path)
         from post_view_image
         where post_view_id = pv.id) as imagePathList,
-        u.username
+        u.username,
+        -- 查询与此 post_view 关联的所有评论
+        c.id as comment_id,
+        c.user_id as comment_user_id,
+        c.user_name as comment_user_name,
+        c.post_id as comment_post_id,
+        c.content as comment_content,
+        c.created_at as comment_created_at,
+        c.avatar_path as comment_avatar_path
         from
-        post_view pv join user u on pv.user_id = u.id
+        post_view pv
+        join user u on pv.user_id = u.id
+        left join comment c on pv.id = c.post_id
         where
         pv.user_id = #{userId}
         order by RAND()
@@ -75,9 +107,19 @@
         (select GROUP_CONCAT(image_path)
         from post_view_image
         where post_view_id = pv.id) as imagePathList,
-        u.username
+        u.username,
+        -- 查询与此 post_view 关联的所有评论
+        c.id as comment_id,
+        c.user_id as comment_user_id,
+        c.user_name as comment_user_name,
+        c.post_id as comment_post_id,
+        c.content as comment_content,
+        c.created_at as comment_created_at,
+        c.avatar_path as comment_avatar_path
         from
-        post_view pv join user u on pv.user_id = u.id
+        post_view pv
+        join user u on pv.user_id = u.id
+        left join comment c on pv.id = c.post_id
         order by RAND()
     </select>
 </mapper>

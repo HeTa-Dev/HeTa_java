@@ -10,6 +10,11 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
 
+#  # Jackson 配置
+#    jackson:
+#      date-format: yyyy-MM-dd HH:mm:ss  # 指定日期格式
+#      time-zone: GMT+8                  # 指定时区
+
 # 配置Mybatis映射
 mybatis:
   mapper-locations: classpath:/Mapper/*.xml
