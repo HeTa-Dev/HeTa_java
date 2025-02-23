@@ -33,4 +33,9 @@ public class OrderViewController {
     public List<OrderView> findAllOrderView(){
         return orderViewService.findAllOrderView();
     }
+
+    @GetMapping("/findOrderViewByItemName/{itemName}")
+    public List<OrderView> findOrderViewByItemName(@PathVariable("itemName") String itemName){
+        return orderViewService.findOrderViewByItemName(itemName);
+    }
 }

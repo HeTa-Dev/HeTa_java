@@ -100,4 +100,32 @@
         order by RAND()
 
     </select>
+
+    <select id="findOrderViewByItemName" resultMap="OrderViewResultMap" parameterType="string">
+        -- 设置最大长度为 1MB，否则可能导致异常截断
+        set session group_concat_max_len = 1000000;
+        -- 查询 order_view 表中的基本信息
+        select
+        ov.*,
+        -- 查询与此 order_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from order_view_image
+        where order_view_id = ov.id) as imagePathList,
+        -- 查询与此 order_view 关联的所有标签
+        (select GROUP_CONCAT(text)
+        from order_view_tag
+        where order_view_id = ov.id) as tagList,
+        u.username
+        from
+        order_view ov
+        join user u on ov.seller_id = u.id
+        where
+        -- 使用 LIKE 关键字进行模糊搜索，将输入的 itemName 前后加上 % 通配符
+        ov.title like concat('%', #{itemName}, '%')
+        -- 可以根据需要添加更多的搜索条件，比如在标签中搜索
+        or (select GROUP_CONCAT(text)
+        from order_view_tag
+        where order_view_id = ov.id) like concat('%', #{itemName}, '%')
+        order by RAND()
+    </select>
 </mapper>

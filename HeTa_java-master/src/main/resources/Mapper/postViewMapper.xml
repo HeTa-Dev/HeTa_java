@@ -18,16 +18,6 @@
         <collection property="comments" ofType="Comment" resultMap="com.heta.repo.CommentRepository.CommentResultMap"/>
     </resultMap>
 
-<!--    &lt;!&ndash; Comment 的 resultMap 定义 &ndash;&gt;-->
-<!--    <resultMap id="CommentResultMap" type="Comment">-->
-<!--        <id column="comment_id" property="id"/> &lt;!&ndash; 评论 ID &ndash;&gt;-->
-<!--        <result column="comment_user_id" property="userId"/> &lt;!&ndash; 用户 ID &ndash;&gt;-->
-<!--        <result column="comment_user_name" property="userName"/> &lt;!&ndash; 用户名 &ndash;&gt;-->
-<!--        <result column="comment_post_id" property="postId"/> &lt;!&ndash; 关联的 PostView ID &ndash;&gt;-->
-<!--        <result column="comment_content" property="content"/> &lt;!&ndash; 评论内容 &ndash;&gt;-->
-<!--        <result column="comment_created_at" property="createdAt"/> &lt;!&ndash; 评论创建时间 &ndash;&gt;-->
-<!--        <result column="comment_avatar_path" property="avatarPath"/> &lt;!&ndash; 用户头像路径 &ndash;&gt;-->
-<!--    </resultMap>-->
 
     <!-- 插入新的 PostView 记录 -->
     <insert id="addNewPostView" parameterType="PostView">
