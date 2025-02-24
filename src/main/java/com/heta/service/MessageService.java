@@ -24,4 +24,9 @@ public class MessageService {
     public List<Message> getAllMessage(int offset, int limit){
         return messageRepository.getAllMessage(offset,limit);
     }
+
+    // 新增方法：获取私信消息
+    public List<Message> getPrivateMessages(int senderId, int receiverId, int offset, int limit) {
+        return messageRepository.getPrivateMessages(senderId, receiverId, offset, limit);
+    }
 }

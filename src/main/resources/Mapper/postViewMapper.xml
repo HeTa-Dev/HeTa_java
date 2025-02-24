@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heta.repo.PostViewRepository">
+
+    <!-- 定义 resultMap 来处理复杂的结果集映射 -->
+    <resultMap id="PostViewResultMap" type="PostView">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="title" property="title"/>
+        <result column="text" property="text"/>
+        <result column="username" property="userName"/>
+        <result column="cover_image_path" property="coverImagePath"/>
+        <result column="cover_height" property="coverHeight"/>
+        <result column="cover_width" property="coverWidth"/>
+        <collection property="imagePathList" ofType="string" javaType="java.util.List">
+            <result column="imagePathList" />
+        </collection>
+        <collection property="comments" ofType="Comment" resultMap="com.heta.repo.CommentRepository.CommentResultMap"/>
+    </resultMap>
+
+
+    <!-- 插入新的 PostView 记录 -->
+    <insert id="addNewPostView" parameterType="PostView">
+        <!-- 插入 post_view 表 -->
+        insert into post_view (user_id, title, text, cover_image_path, cover_height, cover_width)
+        values (#{userId}, #{title}, #{text}, #{coverImagePath}, #{coverHeight}, #{coverWidth});
+
+        <!-- 插入到 post_view_image 表 -->
+        <foreach collection="imagePathList" item="imagePath" separator=";">
+            insert into post_view_image (post_view_id, image_path)
+            values (LAST_INSERT_ID(), #{imagePath});
+        </foreach>
+    </insert>
+
+    <!-- 根据 ID 查询 PostView 记录 -->
+    <select id="findPostViewById" resultMap="PostViewResultMap" parameterType="int">
+        set session group_concat_max_len = 1000000;  -- 设置最大长度为 1MB,否则可能导致异常截断
+        <!-- 查询 post_view 表中的基本信息 -->
+        select
+        pv.*,
+        -- 查询与此 post_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from post_view_image
+        where post_view_id = pv.id) as imagePathList,
+        u.username,
+        -- 查询与此 post_view 关联的所有评论
+        c.id as comment_id,
+        c.user_id as comment_user_id,
+        c.user_name as comment_user_name,
+        c.post_id as comment_post_id,
+        c.content as comment_content,
+        c.created_at as comment_created_at,
+        c.avatar_path as comment_avatar_path
+        from
+        post_view pv
+        join user u on pv.user_id = u.id
+        left join comment c on pv.id = c.post_id
+        where
+        pv.id = #{id}
+    </select>
+
+    <!-- 根据用户 ID 查询 PostView 记录 -->
+    <select id="findPostViewByUserId" resultMap="PostViewResultMap" parameterType="int">
+        set session group_concat_max_len = 1000000;  -- 设置最大长度为 1MB,否则可能导致异常截断
+        <!-- 查询 post_view 表中的基本信息 -->
+        select
+        pv.*,
+        -- 查询与此 post_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from post_view_image
+        where post_view_id = pv.id) as imagePathList,
+        u.username,
+        -- 查询与此 post_view 关联的所有评论
+        c.id as comment_id,
+        c.user_id as comment_user_id,
+        c.user_name as comment_user_name,
+        c.post_id as comment_post_id,
+        c.content as comment_content,
+        c.created_at as comment_created_at,
+        c.avatar_path as comment_avatar_path
+        from
+        post_view pv
+        join user u on pv.user_id = u.id
+        left join comment c on pv.id = c.post_id
+        where
+        pv.user_id = #{userId}
+        order by RAND()
+    </select>
+
+    <!-- 查询所有 PostView 记录 -->
+    <select id="findAllPostView" resultMap="PostViewResultMap">
+        set session group_concat_max_len = 1000000;  -- 设置最大长度为 1MB，否则可能导致异常截断
+        <!-- 查询 post_view 表中的基本信息 -->
+        select
+        pv.*,
+        -- 查询与此 post_view 关联的所有图片路径
+        (select GROUP_CONCAT(image_path)
+        from post_view_image
+        where post_view_id = pv.id) as imagePathList,
+        u.username,
+        -- 查询与此 post_view 关联的所有评论
+        c.id as comment_id,
+        c.user_id as comment_user_id,
+        c.user_name as comment_user_name,
+        c.post_id as comment_post_id,
+        c.content as comment_content,
+        c.created_at as comment_created_at,
+        c.avatar_path as comment_avatar_path
+        from
+        post_view pv
+        join user u on pv.user_id = u.id
+        left join comment c on pv.id = c.post_id
+        order by RAND()
+    </select>
+</mapper>

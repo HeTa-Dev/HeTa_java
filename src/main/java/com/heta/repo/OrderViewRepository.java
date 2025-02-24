@@ -9,4 +9,5 @@ public interface OrderViewRepository {
     public OrderView findOrderViewById(int id);
     public List<OrderView> findOrderViewBySellerId(int sellerId);
     public List<OrderView> findAllOrderView();
+    public List<OrderView> findOrderViewByItemName(String itemName);
 }

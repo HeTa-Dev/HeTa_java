@@ -38,4 +38,12 @@ public class OrderViewService {
         return orderViewList;
     }
 
+    public List<OrderView> findOrderViewByItemName(String itemName){
+        List<OrderView> orderViewList = orderViewRepository.findOrderViewByItemName(itemName);
+        for(OrderView orderView: orderViewList){
+            orderView.setImagePathList(List.of(orderView.getImagePathList().get(0).split(",")));
+        }
+        return orderViewList;
+    }
+
 }
