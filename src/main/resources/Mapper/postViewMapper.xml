@@ -9,6 +9,7 @@
         <result column="title" property="title"/>
         <result column="text" property="text"/>
         <result column="username" property="userName"/>
+        <result column="user_type" property="userType"/>
         <result column="cover_image_path" property="coverImagePath"/>
         <result column="cover_height" property="coverHeight"/>
         <result column="cover_width" property="coverWidth"/>
@@ -43,6 +44,7 @@
         from post_view_image
         where post_view_id = pv.id) as imagePathList,
         u.username,
+        u.type as user_type,
         -- 查询与此 post_view 关联的所有评论
         c.id as comment_id,
         c.user_id as comment_user_id,
@@ -70,6 +72,7 @@
         from post_view_image
         where post_view_id = pv.id) as imagePathList,
         u.username,
+        u.type as user_type,
         -- 查询与此 post_view 关联的所有评论
         c.id as comment_id,
         c.user_id as comment_user_id,
@@ -98,6 +101,7 @@
         from post_view_image
         where post_view_id = pv.id) as imagePathList,
         u.username,
+        u.type as user_type,
         -- 查询与此 post_view 关联的所有评论
         c.id as comment_id,
         c.user_id as comment_user_id,

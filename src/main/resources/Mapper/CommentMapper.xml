@@ -10,6 +10,7 @@
         <id column="id" property="id"/> <!-- 评论 ID -->
         <result column="user_id" property="userId"/> <!-- 用户 ID -->
         <result column="user_name" property="userName"/> <!-- 用户名 -->
+        <result column="user_type" property="userType"/> <!-- 用户类型 -->
         <result column="post_id" property="postId"/> <!-- 关联的帖子 ID -->
         <result column="content" property="content"/> <!-- 评论内容 -->
         <result column="created_at" property="createdAt"/> <!-- 评论创建时间 -->
@@ -18,8 +19,8 @@
 
     <!-- 添加一条新的评论 -->
     <insert id="addNewComment" parameterType="Comment">
-        INSERT INTO comment (user_id, user_name, post_id, content, created_at, avatar_path)
-        VALUES (#{userId}, #{userName}, #{postId}, #{content}, #{createdAt}, #{avatarPath});
+        INSERT INTO comment (user_id, user_name, post_id, content, created_at, avatar_path, user_type)
+        VALUES (#{userId}, #{userName}, #{postId}, #{content}, #{createdAt}, #{avatarPath}, #{userType});
     </insert>
 
     <!-- 根据评论的唯一标识查找评论 -->
@@ -46,7 +47,7 @@
     <!-- 查找所有的评论 -->
     <select id="findAllComments" resultMap="CommentResultMap">
         SELECT *
-        FROM comment;
+        FROM comment
     </select>
 
 </mapper>

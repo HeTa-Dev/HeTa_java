@@ -11,6 +11,8 @@ public class Comment {
     private int userId;
     // 评论者的用户名
     private String userName;
+    // 评论者的用户类型
+    private String userType;
     // 评论所属帖子的 ID
     private int postId;
     // 评论内容
