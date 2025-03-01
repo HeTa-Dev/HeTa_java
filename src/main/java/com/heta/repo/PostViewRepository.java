@@ -5,8 +5,10 @@ import com.heta.entity.PostView;
 import java.util.List;
 
 public interface PostViewRepository {
-    public void addNewPostView(PostView PostView);
-    public PostView findPostViewById(int id);
-    public List<PostView> findPostViewByUserId(int userId);
-    public List<PostView> findAllPostView();
+    void addNewPostView(PostView PostView);
+    PostView findPostViewById(int id);
+    List<PostView> findPostViewByUserId(int userId);
+    List<PostView> findAllPostView();
+    void increaseLikeCount(int id);
+    void increaseDislikeCount(int id);
 }

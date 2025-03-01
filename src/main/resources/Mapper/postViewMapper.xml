@@ -13,6 +13,8 @@
         <result column="cover_image_path" property="coverImagePath"/>
         <result column="cover_height" property="coverHeight"/>
         <result column="cover_width" property="coverWidth"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="dislike_count" property="dislikeCount"/>
         <collection property="imagePathList" ofType="string" javaType="java.util.List">
             <result column="imagePathList" />
         </collection>
@@ -116,4 +118,16 @@
         left join comment c on pv.id = c.post_id
         order by RAND()
     </select>
+
+    <update id="increaseLikeCount" parameterType="int">
+        UPDATE post_view
+        SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="increaseDislikeCount" parameterType="int">
+        UPDATE post_view
+        SET dislike_count = dislike_count + 1
+        WHERE id = #{id}
+    </update>
 </mapper>

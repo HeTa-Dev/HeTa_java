@@ -38,6 +38,12 @@ public class PostViewService {
         return postViewList;
     }
 
+    public void increaseLikeCount(int id){
+        postViewRepository.increaseLikeCount(id);
+    }
 
+    public void increaseDislikeCount(int id){
+        postViewRepository.increaseDislikeCount(id);
+    }
 
 }

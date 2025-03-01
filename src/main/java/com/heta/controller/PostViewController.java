@@ -33,4 +33,15 @@ public class PostViewController {
     public List<PostView> findAllPostView(){
         return postViewService.findAllPostView();
     }
+
+    @PostMapping("/increaseLikeCount/{id}")
+    public void increaseLikeCount(@PathVariable("id") int id){
+        postViewService.increaseLikeCount(id);
+    }
+
+    @PostMapping("/increaseDislikeCount/{id}")
+    public void increaseDislikeCount(@PathVariable("id") int id){
+        postViewService.increaseDislikeCount(id);
+    }
+
 }
