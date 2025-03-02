@@ -1,16 +1,16 @@
 package com.heta.repo;
 
 import com.heta.entity.User;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserRepository {
-    public User findUserById(int id);
-    public User findUserByPhoneNum(long phoneNum);
-    public void addNewUser(User user);
-    public User getUserDetailById(int id);
-    public void updateUser(User user);
-    public List<User> getContactById(int id);
+    User findUserById(int id);
+    User findUserByPhoneNum(long phoneNum);
+    void addNewUser(User user);
+    User getUserDetailById(int id);
+    void updateUser(User user);
+    List<User> getContactById(int id);
+    void setBanned(int id);
+    void setUnbanned(int id);
 }

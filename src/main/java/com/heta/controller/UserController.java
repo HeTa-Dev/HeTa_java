@@ -3,7 +3,6 @@ package com.heta.controller;
 import com.heta.entity.User;
 import com.heta.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -60,5 +59,15 @@ public class UserController {
     @GetMapping("/getContactById/{id}")
     public  List<User> getContactById(@PathVariable int id) {
        return userService.getContactById(id);
+    }
+
+    @PutMapping("/setBanned/{id}")
+    public void setBanned(@PathVariable int id){
+        userService.setBanned(id);
+    }
+
+    @PutMapping("/setUnbanned/{id}")
+    public void setUnbanned(@PathVariable int id){
+        userService.setUnbanned(id);
     }
 }

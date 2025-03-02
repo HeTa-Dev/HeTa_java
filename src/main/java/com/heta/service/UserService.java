@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 //连接UserRepository接口和UserController的类，可能需要进行一些逻辑判断等操作
 @Service
@@ -41,5 +40,13 @@ public class UserService {
     }
     public  List<User>  getContactById(int id){
         return userRepository.getContactById(id);
+    }
+
+    public void setBanned(int id){
+        userRepository.setBanned(id);
+    }
+
+    public void setUnbanned(int id){
+        userRepository.setUnbanned(id);
     }
 }

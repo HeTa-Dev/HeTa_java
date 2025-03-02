@@ -7,6 +7,7 @@
         <result column="phone_num" property="phoneNum"/>
         <result column="avatar_path" property="avatarPath"/>
         <result column="personal_slogan" property="personalSlogan"/>
+        <result column="is_banned" property="isBanned"/>
     </resultMap>
     <!-- 根据用户ID获取用户信息 -->
     <select id="findUserById" parameterType="int" resultMap="userResultMap">
@@ -62,4 +63,18 @@
            where userA_id = #{id}
            )
     </select>
+
+    <!-- 禁用用户 -->
+    <update id="setBanned" parameterType="int">
+        update user
+        set is_banned = true
+        where id = #{id}
+    </update>
+
+    <!-- 解禁用户 -->
+    <update id="setUnbanned" parameterType="int">
+        update user
+        set is_banned = false
+        where id = #{id}
+    </update>
 </mapper>

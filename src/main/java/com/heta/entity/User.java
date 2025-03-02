@@ -2,8 +2,6 @@ package com.heta.entity;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class User {
     private String username;
@@ -15,4 +13,5 @@ public class User {
     private String address;//TODO：未来如果需求更复杂可以另创一个Address类
     private String personalSlogan;
     private String type;
+    private Boolean isBanned;
 }
