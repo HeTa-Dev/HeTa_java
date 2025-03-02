@@ -18,5 +18,6 @@ public class PostView {
     private int coverWidth;
     private int likeCount;
     private int dislikeCount;
+    private boolean reported;
     private List<Comment> comments;
 }

@@ -44,4 +44,18 @@ public class PostViewController {
         postViewService.increaseDislikeCount(id);
     }
 
+    @PostMapping("/setReported/{id}")
+    public void setReported(@PathVariable("id") int id){
+        postViewService.setReported(id);
+    }
+
+    @PostMapping("/setUnReported/{id}")
+    public void setUnReported(@PathVariable("id") int id){
+        postViewService.setUnReported(id);
+    }
+
+    @DeleteMapping("/deletePostView/{id}")
+    public void deletePostView(@PathVariable("id") int id){
+        postViewService.deletePostView(id);
+    }
 }

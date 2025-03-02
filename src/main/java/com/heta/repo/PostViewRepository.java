@@ -11,4 +11,7 @@ public interface PostViewRepository {
     List<PostView> findAllPostView();
     void increaseLikeCount(int id);
     void increaseDislikeCount(int id);
+    void setReported(int id);
+    void setUnReported(int id);
+    void deletePostView(int id);
 }

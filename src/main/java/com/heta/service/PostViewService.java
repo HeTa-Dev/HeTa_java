@@ -46,4 +46,16 @@ public class PostViewService {
         postViewRepository.increaseDislikeCount(id);
     }
 
+    public void setReported(int id){
+        postViewRepository.setReported(id);
+    }
+
+    public void setUnReported(int id){
+        postViewRepository.setUnReported(id);
+    }
+
+    public void deletePostView(int id){
+        postViewRepository.deletePostView(id);
+    }
+
 }
