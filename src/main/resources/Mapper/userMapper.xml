@@ -53,16 +53,16 @@
         where user_id = #{id}
     </update>
 
-    <!-- 获取联系人信息 -->
-    <select id="getContactById" parameterType="int" resultMap="userResultMap">
-       select *
-       from user
-       where user.id in(
-           select userB_id
-           from user_contact
-           where userA_id = #{id}
-           )
-    </select>
+<!--    &lt;!&ndash; 获取联系人信息 &ndash;&gt;-->
+<!--    <select id="getContactById" parameterType="int" resultMap="userResultMap">-->
+<!--       select *-->
+<!--       from user-->
+<!--       where user.id in(-->
+<!--           select userB_id-->
+<!--           from user_contact-->
+<!--           where userA_id = #{id}-->
+<!--           )-->
+<!--    </select>-->
 
     <!-- 禁用用户 -->
     <update id="setBanned" parameterType="int">

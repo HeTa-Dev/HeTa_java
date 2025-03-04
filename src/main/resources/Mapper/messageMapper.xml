@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.heta.repo.MessageRepository">
 
-    <resultMap id="messageResultMap" type="Message">
+    <!-- 定义 Message 的结果映射 -->
+    <resultMap id="messageResultMap" type="com.heta.entity.Message">
         <id column="id" property="id"/>
         <result column="sender_id" property="senderId"/>
         <result column="sender_name" property="senderName"/>
@@ -10,35 +11,55 @@
         <result column="content" property="content"/>
         <result column="timestamp" property="timestamp"/>
         <result column="sender_avatar_path" property="senderAvatarPath"/>
+<!--        <result column="isPrivate" property="isPrivate"/>-->
     </resultMap>
 
     <!-- 插入消息记录 -->
-    <insert id="insertMessage" parameterType="Message">
-        insert into messages (sender_id, sender_name, receiver_id, content, sender_avatar_path)
-        values (#{senderId}, #{senderName}, #{receiverId}, #{content}, #{senderAvatarPath})
+    <insert id="insertMessage" parameterType="com.heta.entity.Message">
+        INSERT INTO messages (sender_id, sender_name, receiver_id, content, sender_avatar_path)
+        VALUES (#{senderId}, #{senderName}, #{receiverId}, #{content}, #{senderAvatarPath})
     </insert>
 
     <!-- 查询历史记录 -->
     <select id="getMessagesById" resultMap="messageResultMap">
-        select *
-        from messages
-        where (receiver_id = #{receiverId} and sender_id = #{senderId})
-           or (receiver_id = #{senderId} and sender_id = #{receiverId})
-        order by timestamp desc
-            LIMIT #{offset}, #{limit}
+        SELECT *
+        FROM messages
+        WHERE (receiver_id = #{receiverId} AND sender_id = #{senderId})
+        OR (receiver_id = #{senderId} AND sender_id = #{receiverId})
+        ORDER BY timestamp DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
-    <!-- 这是另一种方法，可以不用resultMap就完成数据库变量名和java变量名的映射 -->
-    <select id="getAllMessage" resultType="Message">
-        select id,
-               sender_id as senderId,
-               sender_name as senderName,
-               receiver_id as receiverId,
-               content,
-               timestamp,
-                sender_avatar_path as senderAvatarPath
-        from messages
-        order by timestamp desc
-            LIMIT #{offset}, #{limit}
+    <!-- 查询所有消息 -->
+    <select id="getAllMessage" resultMap="messageResultMap">
+        SELECT id,
+        sender_id AS senderId,
+        sender_name AS senderName,
+        receiver_id AS receiverId,
+        content,
+        timestamp,
+        sender_avatar_path AS senderAvatarPath,
+        contact_id AS contactId <!-- 新增字段 -->
+        FROM messages
+        ORDER BY timestamp DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询私信消息 -->
+    <select id="getPrivateMessages" resultMap="messageResultMap">
+        SELECT id,
+        sender_id AS senderId,
+        sender_name AS senderName,
+        receiver_id AS receiverId,
+        content,
+        timestamp,
+        sender_avatar_path AS senderAvatarPath,
+        contact_id AS contactId <!-- 新增字段 -->
+        FROM messages
+        WHERE is_private = 1
+        AND (receiver_id = #{receiverId} AND sender_id = #{senderId})
+        OR (receiver_id = #{senderId} AND sender_id = #{receiverId})
+        ORDER BY timestamp DESC
+        LIMIT #{offset}, #{limit}
     </select>
 </mapper>

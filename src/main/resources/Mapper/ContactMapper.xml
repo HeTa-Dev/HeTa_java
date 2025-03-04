@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heta.repo.ContactRepository">
+
+    <!-- 定义 Contact 的结果映射 -->
+    <resultMap id="contactResultMap" type="Contact">
+        <id column="id" property="id"/>
+
+        <!-- 映射 chatter1 的字段到 Contact 的属性 -->
+        <result column="chatter1_id" property="chatter1_id"/>
+        <result column="chatter1_username" property="chatter1_username"/>
+        <result column="chatter1_avatarPath" property="chatter1_avatarPath"/>
+
+        <!-- 映射 chatter2 的字段到 Contact 的属性 -->
+        <result column="chatter2_id" property="chatter2_id"/>
+        <result column="chatter2_username" property="chatter2_username"/>
+        <result column="chatter2_avatarPath" property="chatter2_avatarPath"/>
+    </resultMap>
+
+    <insert id="saveContact" parameterType="com.heta.entity.Contact">
+        <!-- 查询是否存在相同的联系人组合（不论顺序） -->
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            SELECT COALESCE(
+            (SELECT id FROM contacts
+            WHERE (chatter1_id = #{chatter1_id} AND chatter2_id = #{chatter2_id})
+            OR (chatter1_id = #{chatter2_id} AND chatter2_id = #{chatter1_id})
+            LIMIT 1),
+            -1
+            )
+        </selectKey>
+
+        <!-- 如果不存在，则插入 -->
+        <if test="id == -1">
+            insert into contacts (
+            chatter1_id, chatter1_username, chatter1_avatarPath,
+            chatter2_id, chatter2_username, chatter2_avatarPath
+            ) values (
+            #{chatter1_id}, #{chatter1_username}, #{chatter1_avatarPath},
+            #{chatter2_id}, #{chatter2_username}, #{chatter2_avatarPath}
+            )
+        </if>
+        <if test="id != -1">
+            SELECT 1
+        </if>
+    </insert>
+
+    <!-- 根据 ID 查询联系人记录 -->
+    <select id="getContactsById" parameterType="int" resultMap="contactResultMap">
+        SELECT c.id, c.chatter1_id, c.chatter2_id,c.chatter1_username,c.chatter2_username,c.chatter1_avatarPath,c.chatter2_avatarPath
+        FROM contacts c
+        WHERE c.chatter1_id = #{id} OR c.chatter2_id = #{id}
+    </select>
+
+    <!-- 根据两个用户查询联系人记录 -->
+    <select id="getContactByChatters" parameterType="map" resultMap="contactResultMap">
+        SELECT c.id,
+        u1.id AS chatter1_id,
+<!--        u1.username AS chatter1_username,-->
+<!--        u1.avatarPath AS chatter1_avatarPath,-->
+        u2.id AS chatter2_id,
+<!--        u2.username AS chatter2_username,-->
+<!--        u2.avatarPath AS chatter2_avatarPath-->
+        FROM contacts c
+        LEFT JOIN users u1 ON c.chatter1_id = u1.id
+        LEFT JOIN users u2 ON c.chatter2_id = u2.id
+        WHERE (c.chatter1_id = #{chatter1Id} AND c.chatter2_id = #{chatter2Id})
+        OR (c.chatter1_id = #{chatter2Id} AND c.chatter2_id = #{chatter1Id})
+    </select>
+
+    <!-- 获取所有联系人记录 -->
+    <select id="getAllContacts" resultMap="contactResultMap">
+        SELECT c.id,
+        u1.id AS chatter1_id,
+<!--        u1.username AS chatter1_username,-->
+<!--        u1.avatarPath AS chatter1_avatarPath,-->
+        u2.id AS chatter2_id,
+<!--        u2.username AS chatter2_username,-->
+<!--        u2.avatarPath AS chatter2_avatarPath-->
+        FROM contacts c
+        LEFT JOIN users u1 ON c.chatter1_id = u1.id
+        LEFT JOIN users u2 ON c.chatter2_id = u2.id
+    </select>
+
+    <!-- 删除联系人记录 -->
+    <delete id="deleteContact" parameterType="long">
+        DELETE FROM contacts WHERE id = #{id}
+    </delete>
+</mapper>
