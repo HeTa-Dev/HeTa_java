@@ -30,7 +30,7 @@
         values (#{userId}, #{title}, #{text}, #{coverImagePath}, #{coverHeight}, #{coverWidth});
 
         <!-- 插入到 post_view_image 表 -->
-        <foreach collection="imagePathList" item="imagePath" separator=";">
+        <foreach collection="imagePathList" item="imagePath" separator="">
             insert into post_view_image (post_view_id, image_path)
             values (LAST_INSERT_ID(), #{imagePath});
         </foreach>
