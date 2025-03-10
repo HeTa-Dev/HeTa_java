@@ -73,7 +73,6 @@ public class UserController {
         HttpSession session = request.getSession();
         // 从会话中获取之前存储的验证码
         String storedCaptcha = (String) session.getAttribute("captcha");
-        System.out.println(storedCaptcha);
 
         if (storedCaptcha == null || !storedCaptcha.equalsIgnoreCase(captchaInput)) {
             resultMap.put("rightCaptcha",false);
